@@ -5,6 +5,7 @@ $str = "";
 
 if (isset($_GET['find'])) {
     $str = strtolower(trim($_GET['str']));
+    setcookie("lastFind", $str, time() + (86400 * 30), "/");
 }
 
 
@@ -74,7 +75,7 @@ if ($prodottiCards === "") {
     </nav>
     <main id="find_main">
         <form action="" method="get">
-            <input type="text" name="str" id="str" required placeholder="cerca qualcosa">
+            <input type="text" name="str" id="str" value="<?= isset($_COOKIE["lastFind"]) ? $_COOKIE["lastFind"] : "" ?>" required placeholder="cerca qualcosa">
             <input type="submit" value="find" name="find">
         </form>
         <div id="prodotti_list">
