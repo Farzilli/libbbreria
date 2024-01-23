@@ -1,0 +1,16 @@
+{
+    "name": "libbbreria",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "sass -w style.scss:style/style.css"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "sass": "^1.69.5"
+    }
+}

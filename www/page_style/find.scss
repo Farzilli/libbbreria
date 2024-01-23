@@ -1,0 +1,176 @@
+#find_main {
+    margin: auto;
+    width: 95%;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    h1 {
+        color: $orange;
+        text-transform: capitalize;
+        font-size: 30px;
+        font-weight: 400;
+    }
+
+    form {
+        width: 95%;
+        margin: 20px;
+        padding: 20px;
+        background-color: rgba($black, 0.2);
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
+
+        input {
+            border: 1px solid rgba($black, 0.5);
+            border-radius: 5px;
+            padding: 10px;
+            width: 80%;
+            min-width: 300px;
+            margin: 8px;
+            background-color: rgba($black, 0.5);
+            font-size: 15px;
+            color: $white;
+
+            &::placeholder {
+                color: rgba($white, 0.7);
+            }
+
+            &[type="submit"] {
+                width: 10%;
+                min-width: 200px;
+                border: 0;
+                background-color: $background;
+                border: 2px solid $orange;
+                border-radius: 100px;
+                text-transform: capitalize;
+                font-size: 20px;
+                cursor: pointer;
+                color: $white;
+
+                &:hover {
+                    transition: 0.05s;
+                    transform: scale(1.05);
+                    background-color: $orange;
+                }
+            }
+        }
+    }
+
+    #prodotti_list {
+        width: 95%;
+        display: grid;
+        gap: 10px;
+        place-items: center;
+        align-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+
+        #card {
+            width: 350px;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+
+            &:hover {
+                transition: 0.1s;
+                background-color: rgba($black, 0.3);
+                transform: scale(1.05);
+            }
+
+            a {
+                width: 100%;
+                height: 65%;
+                text-decoration: none;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 5px;
+
+                    &:hover {
+                        transition: 0.1s;
+                        transform: scale(1.01);
+                    }
+                }
+            }
+
+            #desc {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+                height: 20%;
+                h1 {
+                    width: 100%;
+                    height: 50%;
+                    display: grid;
+                    place-items: center;
+                    font-size: 30px;
+                    text-transform: capitalize;
+                    font-weight: 500;
+                    color: $white;
+
+                    &:hover {
+                        transition: 0.1s;
+                        color: $orange;
+                    }
+                }
+
+                h2 {
+                    width: 100%;
+                    height: 50%;
+                    display: grid;
+                    place-items: center;
+                    font-size: 18px;
+                    text-transform: capitalize;
+                    font-weight: 300;
+                    color: $white;
+
+                    &:hover {
+                        transition: 0.1s;
+                        color: $orange;
+                    }
+                }
+            }
+
+            #add_cart {
+                width: 100%;
+                height: 15%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-radius: 5px;
+                border: 2px solid $orange;
+                margin: 5px;
+                padding: 5px;
+
+                &:hover {
+                    background-color: $orange;
+                    transition: 0.1s;
+                    transform: scale(1.05);
+                }
+
+                i {
+                    width: 30px;
+                    height: 30px;
+                    display: block;
+                    background-image: url("../icon/cart.png");
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: center;
+                }
+            }
+        }
+    }
+}

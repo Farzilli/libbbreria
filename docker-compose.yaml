@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+    php:
+        container_name: web
+        image: webdevops/php-apache:8.2-alpine
+        ports:
+            - "8080:80"
+        volumes:
+            - ./www:/app
+
+
+# to run: [docker-compose up]

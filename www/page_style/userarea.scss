@@ -1,0 +1,127 @@
+#userarea_main {
+    width: 95%;
+    min-height: calc(100vh - 120px);
+    margin: 20px auto;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+
+    #logout {
+        width: 90%;
+        max-width: 1200px;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($black, 0.1);
+
+        h1 {
+            color: $white;
+        }
+
+        input {
+            min-width: 200px;
+            margin: 8px;
+            padding: 10px;
+            color: $white;
+            width: 40%;
+            background-color: $background;
+            border: 2px solid $orange;
+            border-radius: 100px;
+            text-transform: capitalize;
+            font-size: 20px;
+            cursor: pointer;
+
+            &::placeholder {
+                color: rgba($white, 0.7);
+            }
+
+            &:hover {
+                transition: 0.05s;
+                transform: scale(1.05);
+                background-color: $orange;
+            }
+        }
+    }
+
+    #form {
+        width: 90%;
+        max-width: 1200px;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($black, 0.1);
+
+        form {
+            width: 50%;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            h1 {
+                color: $white;
+                text-transform: uppercase;
+            }
+
+            h2 {
+                color: red;
+                text-transform: uppercase;
+                text-decoration: underline;
+                font-size: 15px;
+            }
+
+            input {
+                border: 1px solid rgba($black, 0.5);
+                border-radius: 5px 5px 0px 0px;
+                padding: 10px;
+                width: 80%;
+                min-width: 200px;
+                margin: 8px;
+                background-color: rgba($black, 0.5);
+                border-bottom: 2px solid $orange;
+                font-size: 15px;
+                color: $white;
+                &::placeholder {
+                    color: rgba($white, 0.7);
+                }
+
+                &[type="submit"] {
+                    width: 40%;
+                    border: 0;
+                    background-color: $background;
+                    border: 2px solid $orange;
+                    border-radius: 100px;
+                    text-transform: capitalize;
+                    font-size: 20px;
+                    cursor: pointer;
+                    color: $white;
+
+                    &:hover {
+                        transition: 0.05s;
+                        transform: scale(1.05);
+                        background-color: $orange;
+                    }
+                }
+            }
+
+            .changeform {
+                background-color: transparent;
+                cursor: pointer;
+                color: $orange;
+                text-transform: capitalize;
+                margin: 5px;
+                text-decoration: underline;
+
+                &:hover {
+                    transition: 0.05s;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

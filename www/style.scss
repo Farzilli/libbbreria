@@ -1,0 +1,165 @@
+$background: rgb(20, 20, 20);
+$orange: #f45f0b;
+$white: white;
+$black: black;
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap");
+
+$media-little: "only screen and (max-width: 900px)";
+$media-big: "only screen and (min-width: 900px)";
+
+*,
+:root {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    ::selection {
+        color: $white;
+        background-color: $orange;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    max-width: 100vw;
+    min-height: 100vh;
+    background-color: $background;
+    font-family: "Oswald", sans-serif;
+}
+
+nav {
+    width: 100%;
+    min-height: 120px;
+    background-color: $black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    @media #{$media-little} {
+        flex-direction: column;
+    }
+
+    #title {
+        color: $white;
+        padding: 0 20px;
+        text-transform: capitalize;
+        font-size: 20px;
+    }
+
+    #sections_btns {
+        height: 100%;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        a {
+            text-decoration: none;
+            color: $white;
+            text-transform: capitalize;
+            padding: 20px;
+            font-size: 18px;
+
+            &#selected {
+                color: $orange;
+                text-transform: uppercase;
+            }
+
+            &:hover {
+                color: $orange;
+                transition: 0.1s;
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    #user_btns {
+        height: 100%;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+
+        a {
+            margin: 10px;
+            width: 50px;
+            height: 50px;
+            border: 2px solid $orange;
+            display: grid;
+            place-items: center;
+            border-radius: 100%;
+
+            &#selected {
+                background-color: $orange;
+            }
+
+            i {
+                width: 50%;
+                height: 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+
+            &:hover {
+                transition: 0.1s;
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+
+footer {
+    background-color: $black;
+    color: $white;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+
+    .text {
+        padding: 10px;
+        p {
+            font-size: 30px;
+        }
+    }
+
+    .social {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            height: 60px;
+            margin: 0 20px;
+            background-color: $background;
+            border-radius: 100%;
+            border: 2px solid $orange;
+            padding: 10px;
+        }
+    }
+}
+
+@import "./page_style/index.scss";
+@import "./page_style/libri.scss";
+@import "./page_style/libro.scss";
+@import "./page_style/disco.scss";
+@import "./page_style/dischi.scss";
+@import "./page_style/carrello.scss";
+@import "./page_style/userarea.scss";
+@import "./page_style/find.scss";
