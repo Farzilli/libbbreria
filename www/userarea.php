@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //? login
     elseif (isset($_POST['login'])) {
         $email = $_POST['email'];
-        $password = $_POST['password'];
+        $PASSWORD = $_POST['password'];
 
-        if (isset($_SESSION["accounts"][$email]) && password_verify($password, $_SESSION["accounts"][$email]["password"])) {
+        if (isset($_SESSION["accounts"][$email]) && password_verify($PASSWORD, $_SESSION["accounts"][$email]["password"])) {
             $_SESSION["email"] = $email;
-            $_SESSION["password"] = $password;
+            $_SESSION["password"] = $PASSWORD;
             isset($_SESSION["backpage"]) ? header("Location:carrello.php") : header("Location:index.php");
             unset($_SESSION["backpage"]);
         } else $userError = "Invalid email or password!";
@@ -42,13 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //? register
     elseif (isset($_POST['register'])) {
         $email = $_POST['email'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $PASSWORD = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $date = $_POST['date'];
 
-        if (!isset($_SESSION["accounts"][$email]) && isset($email) && isset($password) && isset($date)) {
-            $_SESSION["accounts"][$email] = ["password" => $password, "date" => $date];
+        if (!isset($_SESSION["accounts"][$email]) && isset($email) && isset($PASSWORD) && isset($date)) {
+            $_SESSION["accounts"][$email] = ["password" => $PASSWORD, "date" => $date];
             $_SESSION["email"] = $email;
-            $_SESSION["password"] = $password;
+            $_SESSION["password"] = $PASSWORD;
             isset($_SESSION["backpage"]) ? header("Location:carrello.php") : header("Location:index.php");
             unset($_SESSION["backpage"]);
         } else $userError = "Invalid data for registration!";

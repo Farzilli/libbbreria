@@ -1,47 +1,22 @@
 <?php
 session_start();
-include_once("./inc/data.php");
+include_once("./inc/db_config.php");
 
-function getBook($arr, $id)
-{
-    foreach ($arr as $e) if ($id == $e["id"]) return $e;
-    return null;
-}
-
-if (isset($_GET['addlibro'])) {
-    isset($_SESSION["cart"]["libri"][$_GET['addlibro']]) ? $_SESSION["cart"]["libri"][$_GET['addlibro']]++ : $_SESSION["cart"]["libri"][$_GET['addlibro']] = 1;
+if (isset($_GET['add'])) {
+    isset($_SESSION["cart"][$_GET['add']]) ? $_SESSION["cart"][$_GET['add']]++ : $_SESSION["cart"][$_GET['add']] = 1;
     header("Location: carrello.php");
     exit();
 }
 
-if (isset($_GET['rmlibro'])) {
-    if (isset($_SESSION["cart"]["libri"][$_GET['rmlibro']]) && $_SESSION["cart"]["libri"][$_GET['rmlibro']] > 1) $_SESSION["cart"]["libri"][$_GET['rmlibro']]--;
-    else unset($_SESSION["cart"]["libri"][$_GET['rmlibro']]);
+if (isset($_GET['rm'])) {
+    if (isset($_SESSION["cart"][$_GET['rm']]) && $_SESSION["cart"][$_GET['rm']] > 1) $_SESSION["cart"][$_GET['rm']]--;
+    else unset($_SESSION["cart"][$_GET['rm']]);
     header("Location: carrello.php");
     exit();
 }
 
-if (isset($_GET['dellibro'])) {
-    unset($_SESSION["cart"]["libri"][$_GET['dellibro']]);
-    header("Location: carrello.php");
-    exit();
-}
-
-if (isset($_GET['adddisco'])) {
-    isset($_SESSION["cart"]["dischi"][$_GET['adddisco']]) ? $_SESSION["cart"]["dischi"][$_GET['adddisco']]++ : $_SESSION["cart"]["dischi"][$_GET['adddisco']] = 1;
-    header("Location: carrello.php");
-    exit();
-}
-
-if (isset($_GET['rmdisco'])) {
-    if (isset($_SESSION["cart"]["dischi"][$_GET['rmdisco']]) && $_SESSION["cart"]["dischi"][$_GET['rmdisco']] > 1) $_SESSION["cart"]["dischi"][$_GET['rmdisco']]--;
-    else unset($_SESSION["cart"]["dischi"][$_GET['rmdisco']]);
-    header("Location: carrello.php");
-    exit();
-}
-
-if (isset($_GET['deldisco'])) {
-    unset($_SESSION["cart"]["dischi"][$_GET['deldisco']]);
+if (isset($_GET['del'])) {
+    unset($_SESSION["cart"][$_GET['del']]);
     header("Location: carrello.php");
     exit();
 }
@@ -56,53 +31,37 @@ $spesaTot = 0;
 
 $carrello = "";
 if (isset($_SESSION["cart"])) {
-    foreach ($_SESSION["cart"]["libri"] as $e => $qt) {
-        $libro = getBook($libri, $e);
-        $finalPrice = $qt * $libro["price"];
+    foreach ($_SESSION["cart"] as $e => $qt) {
+        $sql = "SELECT * 
+        FROM `Libri` 
+        WHERE id = $e;
+        ";
+        $row = $conn->query($sql);
+
+    if ($row->num_rows > 0) {
+        $element = $row->fetch_assoc();
+        $img = base64_encode($element["img"]);
+        $finalPrice = $qt * $element["price"];
         $spesaTot += $finalPrice;
 
-        if ($libro !== null) $carrello .= <<<HTML
+        if ($element !== null) $carrello .= <<<HTML
             <div class="product">
                 <div id="image">
-                    <img src="$libro[img]">
+                    <img src="data:image/png;base64,$img">
                 </div>
                 <div id="text">
-                    <h1>$libro[title]</h1>
+                    <h1>$element[title]</h1>
                     <h2>quantità: $qt</h2>
                     <h3>prezzo totale: $finalPrice €</h3>
                 </div>
                 <div id="btns">
-                    <a href="?addlibro=$libro[id]" id="add_cart">+</a>
-                    <a href="?rmlibro=$libro[id]" id="add_cart">-</a>
-                    <a href="?dellibro=$libro[id]" id="add_cart"><i></i></a>
+                    <a href="?add=$element[id]" id="add_cart">+</a>
+                    <a href="?rm=$element[id]" id="add_cart">-</a>
+                    <a href="?del=$element[id]" id="add_cart"><i></i></a>
                 </div>
             </div>
         HTML;
-    }
-
-    foreach ($_SESSION["cart"]["dischi"] as $e => $qt) {
-        $disco = getBook($dischi, $e);
-        $finalPrice = $qt * $disco["price"];
-        $spesaTot += $finalPrice;
-
-        if ($disco !== null) $carrello .= <<<HTML
-            <div class="product">
-                <div id="image">
-                    <img src="$disco[img]">
-                </div>
-                <div id="text">
-                    <h1>$disco[title]</h1>
-                    <h2>quantità: $qt</h2>
-                    <h3>prezzo totale: $finalPrice €</h3>
-                </div>
-                <div id="btns">
-                    <a href="?adddisco=$disco[id]" id="add_cart">+</a>
-                    <a href="?rmdisco=$disco[id]" id="add_cart">-</a>
-                    <a href="?deldisco=$disco[id]" id="add_cart"><i></i></a>
-                </div>
-            </div>
-        HTML;
-    }
+    }}
 }
 
 if (isset($_GET['ordina'])) {

@@ -1,45 +1,52 @@
 <?php
 session_start();
-include_once("./inc/data.php");
-
-function getBook($arr, $id)
-{
-    foreach ($arr as $e) if ($id == $e["id"]) return $e;
-    return null;
-}
+include_once("./inc/db_config.php");
 
 if (isset($_GET['add'])) {
-    isset($_SESSION["cart"]["dischi"][$_GET['add']]) ? $_SESSION["cart"]["dischi"][$_GET['add']]++ : $_SESSION["cart"]["dischi"][$_GET['add']] = 1;
-    header("Location: dischi.php");
+    isset($_SESSION["cart"][$_GET['add']]) ? $_SESSION["cart"][$_GET['add']]++ : $_SESSION["cart"][$_GET['add']] = 1;
+    header("Location: index.php");
     exit();
 }
 
-$disco = getBook($dischi, isset($_GET['info']) ? $_GET['info'] : -1);
+$element = null;
 
-$discoInfo = $disco === null ?
-    <<<HTML
-        <div id="info_body">
-            <h1 id="error_msg">ERROR!</h1>
-        </div>
-    HTML
-    :
-    <<<HTML
+$info = $_GET['info'];
+
+$sql = "SELECT * 
+        FROM `Libri` 
+        WHERE id = $info;
+        ";
+$row = $conn->query($sql);
+
+if ($row->num_rows > 0) {
+    $e = $row->fetch_assoc();
+    $img = base64_encode($e["img"]);
+    $element .= <<<HTML
         <div id="info_body">
             <div id="image">
-                <img src="$disco[img]" alt="">
+                <img src="data:image/png;base64,$img" alt="">
             </div>
             <div id="desc">
                 <div id="text">
-                    <h1>$disco[title]</h1>
-                    <h2>$disco[desc]</h2>
-                    <h3>$disco[price]€</h3>
+                    <h1>$e[title]</h1>
+                    <h2>$e[description]</h2>
+                    <h3>$e[price]€</h3>
                 </div>
                 <div id="btns">
-                    <a href="?add=$disco[id]" id="add_cart"><i></i></a>
+                    <a href="?add=$e[id]" id="add_cart"><i></i></a>
                 </div>
             </div>
         </div>
     HTML;
+}
+
+$elementInfo = $element === null ?
+    <<<HTML
+        <div id="info_body">
+            <h1 id="error_msg">ERROR!</h1>
+        </div>
+    HTML :
+    $element;
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +60,7 @@ $discoInfo = $disco === null ?
 </head>
 
 <body>
-    <nav id="disco_nav">
+    <nav id="libro_nav">
         <div id="title">
             <h1>libbbreria</h1>
         </div>
@@ -68,8 +75,8 @@ $discoInfo = $disco === null ?
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>
         </div>
     </nav>
-    <main id="disco_main"><?= $discoInfo ?></main>
-    <footer id="disco_footer">
+    <main id="libro_main"><?= $elementInfo ?></main>
+    <footer id="libro_footer">
         <div class="text">
             <p>Libbbreria</p>
         </div>
@@ -80,4 +87,5 @@ $discoInfo = $disco === null ?
         </div>
     </footer>
 </body>
+
 </html>

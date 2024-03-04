@@ -352,272 +352,6 @@ footer .social img {
   background-position: center;
 }
 
-#libro_main {
-  margin: auto;
-  width: 95%;
-  min-height: calc(100vh - 120px);
-  display: flex;
-  justify-content: center;
-}
-#libro_main #error_msg {
-  color: #f45f0b;
-  font-size: 40px;
-}
-#libro_main #info_body {
-  width: 98%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-}
-@media only screen and (max-width: 900px) {
-  #libro_main #info_body {
-    flex-direction: column;
-  }
-}
-#libro_main #info_body #image {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-}
-#libro_main #info_body #image img {
-  width: 100%;
-  max-width: 500px;
-}
-#libro_main #info_body #image:hover {
-  transition: 0.1s;
-  transform: scale(1.01);
-}
-@media only screen and (max-width: 900px) {
-  #libro_main #info_body #image {
-    width: 90%;
-  }
-}
-#libro_main #info_body #desc {
-  width: 50%;
-}
-@media only screen and (max-width: 900px) {
-  #libro_main #info_body #desc {
-    width: 95%;
-  }
-}
-#libro_main #info_body #desc #text {
-  width: 100%;
-  padding: 20px;
-}
-#libro_main #info_body #desc #text h1 {
-  width: 100%;
-  text-transform: capitalize;
-  display: grid;
-  place-items: center;
-  color: #f45f0b;
-  font-size: 35px;
-}
-#libro_main #info_body #desc #text h2 {
-  width: 100%;
-  text-transform: capitalize;
-  font-weight: 200;
-  font-size: 20px;
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
-  overflow: scroll;
-  max-height: 400px;
-  margin: 30px 0;
-}
-#libro_main #info_body #desc #text h2::-webkit-scrollbar {
-  width: 2px;
-  height: 0;
-  background-color: black;
-}
-#libro_main #info_body #desc #text h2::-webkit-scrollbar-thumb {
-  background-color: #f45f0b;
-}
-#libro_main #info_body #desc #text h2::-webkit-scrollbar-corner {
-  background-color: transparent;
-}
-#libro_main #info_body #desc #text h2:hover {
-  transition: 0.1s;
-  background-color: rgba(0, 0, 0, 0.3);
-  transform: scale(1.05);
-}
-#libro_main #info_body #desc #text h3 {
-  width: 100%;
-  padding: 20px;
-  text-transform: capitalize;
-  color: white;
-  font-weight: 300;
-  font-size: 25px;
-  text-decoration: underline;
-  text-decoration-color: #f45f0b;
-}
-#libro_main #info_body #desc #btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#libro_main #info_body #desc #btns #add_cart {
-  width: 200px;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background-color: #f45f0b;
-  margin: 5px;
-  padding: 5px;
-}
-#libro_main #info_body #desc #btns #add_cart:hover {
-  transition: 0.1s;
-  transform: scale(1.05);
-}
-#libro_main #info_body #desc #btns #add_cart i {
-  width: 30px;
-  height: 30px;
-  display: block;
-  background-image: url("../icon/cart.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
-#disco_main {
-  margin: auto;
-  width: 95%;
-  min-height: calc(100vh - 120px);
-  display: flex;
-  justify-content: center;
-}
-#disco_main #error_msg {
-  color: #f45f0b;
-  font-size: 40px;
-}
-#disco_main #info_body {
-  width: 98%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 20px;
-}
-@media only screen and (max-width: 900px) {
-  #disco_main #info_body {
-    flex-direction: column;
-  }
-}
-#disco_main #info_body #image {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-}
-#disco_main #info_body #image img {
-  width: 100%;
-  max-width: 500px;
-}
-#disco_main #info_body #image:hover {
-  transition: 0.1s;
-  transform: scale(1.01);
-}
-@media only screen and (max-width: 900px) {
-  #disco_main #info_body #image {
-    width: 90%;
-  }
-}
-#disco_main #info_body #desc {
-  width: 50%;
-}
-@media only screen and (max-width: 900px) {
-  #disco_main #info_body #desc {
-    width: 90%;
-  }
-}
-#disco_main #info_body #desc #text {
-  width: 100%;
-  padding: 20px;
-}
-#disco_main #info_body #desc #text h1 {
-  width: 100%;
-  text-transform: capitalize;
-  display: grid;
-  place-items: center;
-  color: #f45f0b;
-  font-size: 40px;
-}
-#disco_main #info_body #desc #text h2 {
-  width: 100%;
-  text-transform: capitalize;
-  font-weight: 200;
-  font-size: 20px;
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
-  overflow: scroll;
-  max-height: 400px;
-  margin: 30px 0;
-}
-#disco_main #info_body #desc #text h2::-webkit-scrollbar {
-  width: 2px;
-  height: 0;
-  background-color: black;
-}
-#disco_main #info_body #desc #text h2::-webkit-scrollbar-thumb {
-  background-color: #f45f0b;
-}
-#disco_main #info_body #desc #text h2::-webkit-scrollbar-corner {
-  background-color: transparent;
-}
-#disco_main #info_body #desc #text h2:hover {
-  transition: 0.1s;
-  background-color: rgba(0, 0, 0, 0.3);
-  transform: scale(1.05);
-}
-#disco_main #info_body #desc #text h3 {
-  width: 100%;
-  padding: 20px;
-  text-transform: capitalize;
-  color: white;
-  font-weight: 300;
-  font-size: 25px;
-  text-decoration: underline;
-  text-decoration-color: #f45f0b;
-}
-#disco_main #info_body #desc #btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#disco_main #info_body #desc #btns #add_cart {
-  width: 200px;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background-color: #f45f0b;
-  margin: 5px;
-  padding: 5px;
-}
-#disco_main #info_body #desc #btns #add_cart:hover {
-  transition: 0.1s;
-  transform: scale(1.05);
-}
-#disco_main #info_body #desc #btns #add_cart i {
-  width: 30px;
-  height: 30px;
-  display: block;
-  background-image: url("../icon/cart.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-
 #dischi_main {
   width: 100%;
   min-height: calc(100vh - 120px);
@@ -713,6 +447,139 @@ footer .social img {
   transform: scale(1.05);
 }
 #dischi_main #dischi #disco_card #add_cart i {
+  width: 30px;
+  height: 30px;
+  display: block;
+  background-image: url("../icon/cart.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+#info {
+  margin: auto;
+  width: 95%;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  justify-content: center;
+}
+#info #error_msg {
+  color: #f45f0b;
+  font-size: 40px;
+}
+#info #info_body {
+  width: 98%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+@media only screen and (max-width: 900px) {
+  #info #info_body {
+    flex-direction: column;
+  }
+}
+#info #info_body #image {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+#info #info_body #image img {
+  width: 100%;
+  max-width: 500px;
+}
+#info #info_body #image:hover {
+  transition: 0.1s;
+  transform: scale(1.01);
+}
+@media only screen and (max-width: 900px) {
+  #info #info_body #image {
+    width: 90%;
+  }
+}
+#info #info_body #desc {
+  width: 50%;
+}
+@media only screen and (max-width: 900px) {
+  #info #info_body #desc {
+    width: 90%;
+  }
+}
+#info #info_body #desc #text {
+  width: 100%;
+  padding: 20px;
+}
+#info #info_body #desc #text h1 {
+  width: 100%;
+  text-transform: capitalize;
+  display: grid;
+  place-items: center;
+  color: #f45f0b;
+  font-size: 40px;
+}
+#info #info_body #desc #text h2 {
+  width: 100%;
+  text-transform: capitalize;
+  font-weight: 200;
+  font-size: 20px;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  overflow: scroll;
+  max-height: 400px;
+  margin: 30px 0;
+}
+#info #info_body #desc #text h2::-webkit-scrollbar {
+  width: 2px;
+  height: 0;
+  background-color: black;
+}
+#info #info_body #desc #text h2::-webkit-scrollbar-thumb {
+  background-color: #f45f0b;
+}
+#info #info_body #desc #text h2::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+#info #info_body #desc #text h2:hover {
+  transition: 0.1s;
+  background-color: rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+#info #info_body #desc #text h3 {
+  width: 100%;
+  padding: 20px;
+  text-transform: capitalize;
+  color: white;
+  font-weight: 300;
+  font-size: 25px;
+  text-decoration: underline;
+  text-decoration-color: #f45f0b;
+}
+#info #info_body #desc #btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#info #info_body #desc #btns #add_cart {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #f45f0b;
+  margin: 5px;
+  padding: 5px;
+}
+#info #info_body #desc #btns #add_cart:hover {
+  transition: 0.1s;
+  transform: scale(1.05);
+}
+#info #info_body #desc #btns #add_cart i {
   width: 30px;
   height: 30px;
   display: block;

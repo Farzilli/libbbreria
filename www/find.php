@@ -1,5 +1,5 @@
 <?php
-include_once("./inc/data.php");
+include_once("./inc/db_config.php");
 
 $str = "";
 
@@ -8,34 +8,27 @@ if (isset($_GET['find'])) {
     setcookie("lastFind", $str, time() + (86400 * 30), "/");
 }
 
-
 $prodottiCards = "";
-foreach ($libri as $e) {
-    if ($str === "" || $str === "libri" || $str === "libro" || stripos($e["title"], $str) !== false || stripos($e["desc"], $str) !== false)
-        $prodottiCards .= <<<HTML
-            <div id="card">
-                <a href="libro.php?info=$e[id]"><img src="$e[img]" alt=""></a>
-                <div id="desc">
-                    <h1>$e[title]</h1>
-                    <h2>$e[price]€</h2>
-                </div>
-                <a href="libro.php?info=$e[id]" id="add_cart"><i></i></a>
-            </div>
-        HTML;
-}
 
-foreach ($dischi as $e) {
-    if ($str === "" || $str === "cd" || stripos($e["title"], $str) !== false || stripos($e["desc"], $str) !== false)
+$sql = "SELECT * 
+        FROM `Libri` 
+        WHERE title LIKE '%$str%' OR description LIKE '%$str%'";
+$row = $conn->query($sql);
+
+if ($row->num_rows > 0) {
+    foreach ($row as $e) {
+        $img = base64_encode($e["img"]);
         $prodottiCards .= <<<HTML
             <div id="card">
-                <a href="disco.php?info=$e[id]"><img src="$e[img]" alt=""></a>
+                <a href="info.php?info=$e[id]"><img src="data:image/png;base64,$img" alt=""></a>
                 <div id="desc">
                     <h1>$e[title]</h1>
                     <h2>$e[price]€</h2>
                 </div>
-                <a href="disco.php?info=$e[id]" id="add_cart"><i></i></a>
+                <a href="info.php?info=$e[id]" id="add_cart"><i></i></a>
             </div>
         HTML;
+    }
 }
 
 if ($prodottiCards === "") {
@@ -43,7 +36,6 @@ if ($prodottiCards === "") {
             <h1>"$str" non ha portato a risultati!</h1>
         HTML;
 }
-
 ?>
 
 
@@ -75,7 +67,7 @@ if ($prodottiCards === "") {
     </nav>
     <main id="find_main">
         <form action="" method="get">
-            <input type="text" name="str" id="str" value="<?= isset($_COOKIE["lastFind"]) ? $_COOKIE["lastFind"] : "" ?>" required placeholder="cerca qualcosa">
+            <input type="text" name="str" id="str" value="<?= $str !== "" ? $str : (isset($_COOKIE["lastFind"]) ? $_COOKIE["lastFind"] : "") ?>" required placeholder="cerca qualcosa">
             <input type="submit" value="find" name="find">
         </form>
         <div id="prodotti_list">

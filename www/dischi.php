@@ -1,27 +1,36 @@
 <?php
 session_start();
-include_once("./inc/data.php");
+include_once("./inc/db_config.php");
 
 if (isset($_GET['add'])) {
-    isset($_SESSION["cart"]["dischi"][$_GET['add']]) ? $_SESSION["cart"]["dischi"][$_GET['add']]++ : $_SESSION["cart"]["dischi"][$_GET['add']] = 1;
+    isset($_SESSION["cart"][$_GET['add']]) ? $_SESSION["cart"][$_GET['add']]++ : $_SESSION["cart"][$_GET['add']] = 1;
     header("Location: dischi.php");
     exit();
 }
 
 $prodottiCards = "";
 
-foreach ($dischi as $e) {
-    $prodottiCards .= <<<HTML
+$sql = "SELECT * 
+        FROM `Libri` 
+        WHERE type = 'cd';
+        ";
+$row = $conn->query($sql);
+
+if ($row->num_rows > 0) {
+    foreach ($row as $e) {
+        $img = base64_encode($e["img"]);
+        $prodottiCards .= <<<HTML
             <div id="disco_card">
-                <a href="disco.php?info=$e[id]"><img src="$e[img]" alt=""></a>
+                <a href="info.php?info=$e[id]"><img src="data:image/png;base64,$img" alt=""></a>
                 <div id="desc">
                     <h1>$e[title]</h1>
                     <h2>$e[price]€</h2>
                 </div>
                 <a href="?add=$e[id]" id="add_cart"><i></i></a>
             </div>
-    HTML;
-}
+        HTML;
+    }
+} else die("empty row");
 ?>
 
 <!DOCTYPE html>
