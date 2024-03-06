@@ -60,7 +60,7 @@ $elementInfo = $element === null ?
 </head>
 
 <body>
-    <nav id="libro_nav">
+    <nav id="info_nav">
         <div id="title">
             <h1>libbbreria</h1>
         </div>
@@ -75,8 +75,8 @@ $elementInfo = $element === null ?
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>
         </div>
     </nav>
-    <main id="libro_main"><?= $elementInfo ?></main>
-    <footer id="libro_footer">
+    <main id="info"><?= $elementInfo ?></main>
+    <footer id="info_footer">
         <div class="text">
             <p>Libbbreria</p>
         </div>
