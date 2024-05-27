@@ -3,6 +3,17 @@
     min-height: calc(100vh - 120px);
     margin: 10px 0;
 
+    #productUpdateMsg {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $white;
+        font-size: 20px;
+        text-decoration: underline;
+    }
+
     #carrello {
         width: 100%;
         display: flex;

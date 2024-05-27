@@ -1,27 +1,78 @@
 <?php
 session_start();
 include_once("./inc/db_config.php");
+include_once("./utilities/QueryBuilder.php");
 
-if (isset($_GET['add'])) {
-    isset($_SESSION["cart"][$_GET['add']]) ? $_SESSION["cart"][$_GET['add']]++ : $_SESSION["cart"][$_GET['add']] = 1;
-    header("Location: libri.php");
-    exit();
+if (!empty($_GET['add'])) {
+    if (!empty($_SESSION["user_id"])) {
+        $checkCartItemQuery = (new QueryBuilder())
+            ->from(
+                ["Carrello" => "c"]
+            )
+            ->select([
+                "c.qty" => "",
+            ])
+            ->where([
+                ["c.userId", "=", $_SESSION["user_id"]],
+                ["c.prodId", "=", $_GET['add']]
+            ]);
+        $result = $conn->query($checkCartItemQuery->build());
+
+        if ($result->num_rows > 0) {
+            $qty = $result->fetch_assoc()["qty"];
+            $updateQuery = (new QueryBuilder())
+                ->from(
+                    ["Carrello" => "c"]
+                )
+                ->update(["qty" => $qty + 1])
+                ->where([
+                    ["c.userId", "=", $_SESSION["user_id"]],
+                    ["c.prodId", "=", $_GET['add']]
+                ]);
+            $result = $conn->query($updateQuery->build());
+        } else {
+            $insertQuery = (new QueryBuilder())
+                ->from("Carrello")
+                ->insert(["userId", "prodId", "qty"])
+                ->values([$_SESSION["user_id"], $_GET['add'], 1]);
+            $result = $conn->query($insertQuery->build());
+        }
+
+        header("Location: libri.php");
+        exit();
+    } else {
+        $_SESSION["backpage"] = "libri.php";
+        header("Location: userarea.php");
+        exit();
+    }
 }
+
 
 $prodottiCards = "";
 
-$sql = "SELECT * 
-        FROM `Libri` 
-        WHERE type = 'libro';
-        ";
-$row = $conn->query($sql);
+$query = (new QueryBuilder())
+    ->from([
+        "Libri" => "l"
+    ])
+    ->select([
+        "l.id" => "",
+        "l.imgurl" => "",
+        "l.title" => "",
+        "l.price" => ""
+    ])
+    ->where(
+        [["l.type", "=", "libro"]],
+    )
+    ->where(
+        [["l.qty", ">", 0]],
+    );
+$row = $conn->query($query->build());
 
 if ($row->num_rows > 0) {
     foreach ($row as $e) {
-        $img = base64_encode($e["img"]);
         $prodottiCards .= <<<HTML
             <div id="libro_card">
-                <a href="info.php?info=$e[id]"><img src="data:image/png;base64,$img" alt=""></a>
+                <a href="info.php?info=$e[id]"><img src="$e[imgurl]" alt=""></a>
                 <div id="desc">
                     <h1>$e[title]</h1>
                     <h2>$e[price]€</h2>
@@ -41,6 +92,7 @@ if ($row->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libbbreria</title>
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="shortcut icon" href="./icon/icon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -54,6 +106,12 @@ if ($row->num_rows > 0) {
             <a href="dischi.php">cd</a>
         </div>
         <div id="user_btns">
+            <?= $_SESSION['ruolo'] == 2 ?
+                <<<HTML
+                        <a href="admin.php"><i style="background-image: url(./icon/admin.png);"></i></a>
+                    HTML :
+                ""
+            ?>
             <a href="find.php"><i style="background-image: url(./icon/find.png);"></i></a>
             <a href="userarea.php"><i style="background-image: url(./icon/user.png);"></i></a>
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>

@@ -1,57 +1,122 @@
 <?php
 ob_start(); //! non rimuovere, si scassa l' header()
+
+//USER ADMIN:
+// email = francesco.arzilli@iticopernico.it
+// password = abc
+
+//USER:
+// email = daniele.boggian@iticopernico.it
+// password = 1234
 ?>
 
 <?php
 session_start();
-
-//? senza db, account base di test
-if (!isset($_SESSION["accounts"]["cookie@test.com"])) {
-    $testEmail = "cookie@test.com";
-    $testPassword = "cookie";
-    $_SESSION["accounts"][$testEmail] = ["password" => password_hash($testPassword, PASSWORD_DEFAULT), "date" => "2023-05-15"];
-}
+include_once "./inc/db_config.php";
+include_once "./utilities/QueryBuilder.php";
 
 $userError = "";
+$userRuolo = $_SESSION["ruolo"] == 2 ? "Admin" : "User";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //? logout
-    if (isset($_POST['logout'])) {
-        unset($_SESSION["email"]);
-        unset($_SESSION["password"]);
-        header("Location:userarea.php");
-    }
-    //? delate
-    if (isset($_POST['delate'])) {
-        unset($_SESSION["accounts"][$_SESSION["email"]]);
-        unset($_SESSION["email"]);
-        unset($_SESSION["password"]);
-        header("Location:userarea.php");
-    }
-    //? login
-    elseif (isset($_POST['login'])) {
-        $email = $_POST['email'];
-        $PASSWORD = $_POST['password'];
+    //! LOGIN
+    if (!empty($_POST["login"])) {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
 
-        if (isset($_SESSION["accounts"][$email]) && password_verify($PASSWORD, $_SESSION["accounts"][$email]["password"])) {
-            $_SESSION["email"] = $email;
-            $_SESSION["password"] = $PASSWORD;
-            isset($_SESSION["backpage"]) ? header("Location:carrello.php") : header("Location:index.php");
-            unset($_SESSION["backpage"]);
-        } else $userError = "Invalid email or password!";
-    }
-    //? register
-    elseif (isset($_POST['register'])) {
-        $email = $_POST['email'];
-        $PASSWORD = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $date = $_POST['date'];
+        if (
+            !empty($email) &&
+            !empty($password)
+        ) {
+            $query = (new QueryBuilder())
+                ->from("Utenti")
+                ->select("*")
+                ->where([
+                    ["email", "=", $email],
+                ]);
+            $result = $conn->query($query->build());
 
-        if (!isset($_SESSION["accounts"][$email]) && isset($email) && isset($PASSWORD) && isset($date)) {
-            $_SESSION["accounts"][$email] = ["password" => $PASSWORD, "date" => $date];
-            $_SESSION["email"] = $email;
-            $_SESSION["password"] = $PASSWORD;
-            isset($_SESSION["backpage"]) ? header("Location:carrello.php") : header("Location:index.php");
-            unset($_SESSION["backpage"]);
-        } else $userError = "Invalid data for registration!";
+            if ($result->num_rows == 1) {
+                $user = $result->fetch_assoc();
+                if (password_verify($password, $user["password"])) {
+                    //? Logged in
+                    $_SESSION['user_id'] = $user['email'];
+                    $_SESSION['username'] = $user['nome'];
+                    $_SESSION['ruolo'] = $user['ruolo'];
+
+                    !empty($_SESSION["backpage"]) ? header("Location: carrello.php") : header("Location: index.php");
+                    unset($_SESSION["backpage"]);
+                } else {
+                    //? password error
+                    $userError = "Invalid password!";
+                }
+            }   else {
+                //? email error
+                $userError = "Invalid email!";
+            }
+        } else {
+            //? Email or password missing
+            $userError = "Email or password missing!";
+        }
+    }
+
+    //! REGISTER
+    if (!empty($_POST["register"])) {
+        $nome = $_POST["name"];
+        $cognome = $_POST["surname"];
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $domicilio = $_POST["domicilio"];
+
+        if (
+            !empty($nome) &&
+            !empty($cognome) &&
+            !empty($email) &&
+            !empty($password) &&
+            !empty($domicilio)
+        ) {
+            $checkUserQuery = (new QueryBuilder())
+                ->from(["Utenti" => "u"])
+                ->select("")
+                ->where([
+                    ["u.email", "=", $email]
+                ])
+                ->count("*", "qty");
+
+            $result = $conn->query($checkUserQuery->build());
+            $row = $result->fetch_assoc();
+            $userExists = $row["qty"] > 0;
+
+            if (!$userExists) {
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                $insertQuery = (new QueryBuilder())
+                    ->from("Utenti")
+                    ->insert(["nome", "cognome", "email", "password", "domicilio"])
+                    ->values([$nome, $cognome, $email, $hashed_password, $domicilio]);
+
+                if ($conn->query($insertQuery->build()) === TRUE) {
+                    $_SESSION['user_id'] = $email;
+                    $_SESSION['username'] = $nome;
+                    $_SESSION['ruolo'] = 1;
+
+                    !empty($_SESSION["backpage"]) ? header("Location:carrello.php") : header("Location:index.php");
+                    unset($_SESSION["backpage"]);
+                } else {
+                    $userError = "Invalid data for registration!";
+                }
+            } else {
+                $userError = "User with this email already exists!";
+            }
+        } else {
+            $userError = "Fields missing!";
+        }
+    }
+
+    //! LOGOUT
+    if (!empty($_POST['logout'])) {
+        session_destroy();
+        header("Location:userarea.php");
     }
 }
 ?>
@@ -64,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libbbreria</title>
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="shortcut icon" href="./icon/icon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -77,19 +143,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="dischi.php">cd</a>
         </div>
         <div id="user_btns">
+            <?= $_SESSION['ruolo'] == 2 ?
+                <<<HTML
+                        <a href="admin.php"><i style="background-image: url(./icon/admin.png);"></i></a>
+                    HTML :
+                ""
+            ?>
             <a href="find.php"><i style="background-image: url(./icon/find.png);"></i></a>
             <a id="selected" href="userarea.php"><i style="background-image: url(./icon/user.png);"></i></a>
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>
         </div>
     </nav>
     <main id="userarea_main">
-        <?= isset($_SESSION["email"]) && isset($_SESSION["password"]) ?
+        <?= !empty($_SESSION["user_id"]) ?
             <<<HTML
                 <div id="logout">
-                    <h1>User: $_SESSION[email]</h1>
+                    <h1>$userRuolo: $_SESSION[username]</h1>
                     <form action="" method="post">
                         <input type="submit" value="logout" name="logout">
-                        <input type="submit" value="delate" name="delate">
                     </form>
                 </div>
             HTML :
@@ -107,9 +178,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form action="" method="post" id="register" style="display: none;">
                         <h1>register</h1>
                         <h2>$userError</h2>
+                        <input type="text" name="name" class="name" required placeholder="nome">
+                        <input type="text" name="surname" class="surname" required placeholder="cognome">
                         <input type="email" name="email" class="email" required placeholder="nome@esempio.com">
                         <input type="password" name="password" class="password" required placeholder="P@s5u0rd">
-                        <input type="date" name="date" class="date" required>
+                        <input type="text" name="domicilio" class="domicilio" required placeholder="indirizzo di casa">
                         <input type="submit" class="submit" value="register" name="register">
                         <button class="changeform">hai già un account?</button>
                     </form>

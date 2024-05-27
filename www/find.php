@@ -1,5 +1,7 @@
 <?php
+session_start();
 include_once("./inc/db_config.php");
+include_once("./utilities/QueryBuilder.php");
 
 $str = "";
 
@@ -10,17 +12,34 @@ if (isset($_GET['find'])) {
 
 $prodottiCards = "";
 
-$sql = "SELECT * 
-        FROM `Libri` 
-        WHERE title LIKE '%$str%' OR description LIKE '%$str%'";
-$row = $conn->query($sql);
+$query = (new QueryBuilder())
+    ->from([
+        "Libri" => "l"
+    ])
+    ->select([
+        "l.id" => "",
+        "l.imgurl" => "",
+        "l.title" => "",
+        "l.price" => ""
+    ])->where(
+        [
+            ["l.title", "like", "%$str%"],
+            ["l.description", "like", "%$str%"]
+        ],
+        QueryBuilder::AND,
+        QueryBuilder::OR,
+    )
+    ->where(
+        [["l.qty", ">", 0]],
+    );
+$row = $conn->query($query->build());
 
 if ($row->num_rows > 0) {
     foreach ($row as $e) {
         $img = base64_encode($e["img"]);
         $prodottiCards .= <<<HTML
             <div id="card">
-                <a href="info.php?info=$e[id]"><img src="data:image/png;base64,$img" alt=""></a>
+                <a href="info.php?info=$e[id]"><img src="$e[imgurl]" alt=""></a>
                 <div id="desc">
                     <h1>$e[title]</h1>
                     <h2>$e[price]€</h2>
@@ -47,6 +66,7 @@ if ($prodottiCards === "") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libbbreria</title>
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="shortcut icon" href="./icon/icon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -60,6 +80,12 @@ if ($prodottiCards === "") {
             <a href="dischi.php">cd</a>
         </div>
         <div id="user_btns">
+            <?= $_SESSION['ruolo'] == 2 ?
+                <<<HTML
+                        <a href="admin.php"><i style="background-image: url(./icon/admin.png);"></i></a>
+                    HTML :
+                ""
+            ?>
             <a id="selected" href="find.php"><i style="background-image: url(./icon/find.png);"></i></a>
             <a href="userarea.php"><i style="background-image: url(./icon/user.png);"></i></a>
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>

@@ -1,0 +1,122 @@
+#admin_main {
+    position: relative;
+    min-height: 100vh;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    #addButton {
+        background-color: $orange;
+        padding: 10px;
+        cursor: pointer;
+        color: $white;
+        border-radius: 5px;
+        margin: 20px;
+        font-size: 20px;
+    }
+
+    #popup {
+        width: 95%;
+        max-width: 500px;
+        display: none;
+        position: fixed;
+        padding: 20px;
+        border: 2px solid $orange;
+        background-color: $background;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        z-index: 1000;
+
+        h1 {
+            color: $white;
+        }
+
+        .input {
+            width: 95%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            margin: auto;
+
+            label {
+                color: $white;
+            }
+
+            input,
+            textarea {
+                padding: 10px;
+                border-radius: 5px;
+                background-color: $white;
+            }
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 5px;
+        }
+    }
+
+    #itemlist {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        h1 {
+            color: $white;
+        }
+
+        .product_form {
+            width: 98%;
+            min-height: 80px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-around;
+            background-color: $orange;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 2px;
+
+            .input {
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+
+                label {
+                    color: $white;
+                    margin: 5px;
+                }
+
+                input,
+                textarea {
+                    padding: 10px;
+                    border-radius: 5px;
+                    margin: 5px;
+                }
+
+                .save {
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                .rm {
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

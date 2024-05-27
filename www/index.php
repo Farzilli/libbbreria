@@ -1,17 +1,30 @@
 <?php
-include_once("./inc/data.php");
+session_start();
+include_once "./inc/db_config.php";
+include_once "./utilities/QueryBuilder.php";
+
+$query = (new QueryBuilder())
+    ->from(["Offerte" => "o"])
+    ->select([
+        "o.prodId" => "id",
+        "o.titolo" => "",
+        "o.descrizione" => "ds",
+        "Libri.imgurl" => "img",
+    ])
+    ->join("Libri", "Libri.id", "=", "o.prodId");
+$retult = $conn->query($query->build());
 
 $offerteCards = "";
-foreach ($offerte as $e) {
+foreach ($retult as $e) {
     $offerteCards .= <<<HTML
         <div class="offerta">
             <div id="image">
                 <img src="$e[img]" alt="">
             </div>
             <div id="desc">
-                <h1>$e[title]</h1>
-                <h2>$e[desc]</h2>
-                <a href="$e[link]">vai all offerta!</a>
+                <h1>$e[titolo]</h1>
+                <h2>$e[ds]</h2>
+                <a href="info.php?info=$e[id]">vai all offerta!</a>
             </div>
         </div>
     HTML;
@@ -26,6 +39,7 @@ foreach ($offerte as $e) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Libbbreria</title>
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="shortcut icon" href="./icon/icon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -39,6 +53,12 @@ foreach ($offerte as $e) {
             <a href="dischi.php">cd</a>
         </div>
         <div id="user_btns">
+            <?= $_SESSION['ruolo'] == 2 ?
+                <<<HTML
+                        <a href="admin.php"><i style="background-image: url(./icon/admin.png);"></i></a>
+                    HTML :
+                ""
+            ?>
             <a href="find.php"><i style="background-image: url(./icon/find.png);"></i></a>
             <a href="userarea.php"><i style="background-image: url(./icon/user.png);"></i></a>
             <a href="carrello.php"><i style="background-image: url(./icon/cart.png);"></i></a>
